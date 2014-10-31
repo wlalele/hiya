@@ -41,7 +41,7 @@ socket.on('connection', function (datas) {
 
 socket.on('playersUpdate', function (serverplayers_list) {
     'use strict';
-	var players_to_delete = [], player_index, i, j, playerFound = false, config, temp_character;
+	var players_to_delete = [], player_index, i, j, player_found = false, config, temp_character;
 	for (player_index = 0; player_index < players_list.length; player_index += 1) {
 		players_to_delete.push(players_list[player_index].id);
 	}
@@ -56,7 +56,7 @@ socket.on('playersUpdate', function (serverplayers_list) {
 
 			for (player_index = 0; player_index < players_list.length; player_index += 1) {
 				if (players_list[player_index].id === serverplayers_list[i].id) {
-					playerFound = true;
+					player_found = true;
 					players_list[player_index].position = serverplayers_list[i].position;
 					players_list[player_index].rotation = serverplayers_list[i].rotation;
 					
@@ -95,7 +95,7 @@ socket.on('playersUpdate', function (serverplayers_list) {
 				}
 			}
 			
-			if (!playerFound) {
+			if (!player_found) {
 				players_list[players_list.length] = serverplayers_list[i];
 			}
 		}
@@ -430,7 +430,7 @@ var init = function () {
 	makeDirectionalLight(new THREE.Vector3(300, 180, 200), new THREE.Vector3(0, 0, 0), 0xFFFFFF);
 	
 	// lights
-	makeLight(30, 0, 18, 0x999999, HIYA.Configuration.LIGHT_INTENSITY, 80);
+	makeLight(30, 0, 18, 0x999999, HIYA.Configuration.LIGHT_INTENSITY, 80, true);
 	//makeLight(30, 30, 18, 0x999999, HIYA.Configuration.LIGHT_INTENSITY, 80);
 	//makeLight(30, -30, 18, 0x999999, HIYA.Configuration.LIGHT_INTENSITY, 80);
 	//makeLight(0, 0, 18, 0x999999, HIYA.Configuration.LIGHT_INTENSITY, 80);
