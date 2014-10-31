@@ -1,4 +1,4 @@
-var socket = io.connect('http://' + HOST + ':' + PORT);
+var socket = io.connect('http://' + HIYA.Configuration.HOST + ':' + HIYA.Configuration.PORT);
 var clock = new THREE.Clock();
 
 var player_model_group,
@@ -372,7 +372,7 @@ var interactionObject = function () {
 	if (intersects.length > 0) {
 		intersect = intersects[0];
 		object = intersect.object;
-		object.toggleLight(LIGHT_INTENSITY);
+		object.toggleLight(HIYA.Configuration.LIGHT_INTENSITY);
 	}
 };
 
@@ -399,11 +399,11 @@ var onMouseWheel = function (event) {
 	}
 
 	if (delta > 0) {
-		if (camera.position.z > CAMERA_DISTANCE_MIN) {
+		if (camera.position.z > HIYA.Configuration.CAMERA_DISTANCE_MIN) {
 			camera.position.z -= 1;
 		}
 	} else {
-		if (camera.position.z < CAMERA_DISTANCE_MAX) {
+		if (camera.position.z < HIYA.Configuration.CAMERA_DISTANCE_MAX) {
 			camera.position.z += 1;
 		}
 	}
@@ -430,14 +430,14 @@ var init = function () {
 	makeDirectionalLight(new THREE.Vector3(300, 180, 200), new THREE.Vector3(0, 0, 0), 0xFFFFFF);
 	
 	// lights
-	makeLight(30, 0, 18, 0x999999, LIGHT_INTENSITY, 80);
-	//makeLight(30, 30, 18, 0x999999, LIGHT_INTENSITY, 80);
-	//makeLight(30, -30, 18, 0x999999, LIGHT_INTENSITY, 80);
-	//makeLight(0, 0, 18, 0x999999, LIGHT_INTENSITY, 80);
-	//makeLight(-30, 0, 18, 0x999999, LIGHT_INTENSITY, 80);
-	makeLight(-30, -30, 18, 0x999999, LIGHT_INTENSITY, 80);
-	makeLight(-30, -30, 18, 0x999999, LIGHT_INTENSITY, 80);
-	makeLight(-30, 30, 18, 0x999999, LIGHT_INTENSITY, 80);
+	makeLight(30, 0, 18, 0x999999, HIYA.Configuration.LIGHT_INTENSITY, 80);
+	//makeLight(30, 30, 18, 0x999999, HIYA.Configuration.LIGHT_INTENSITY, 80);
+	//makeLight(30, -30, 18, 0x999999, HIYA.Configuration.LIGHT_INTENSITY, 80);
+	//makeLight(0, 0, 18, 0x999999, HIYA.Configuration.LIGHT_INTENSITY, 80);
+	//makeLight(-30, 0, 18, 0x999999, HIYA.Configuration.LIGHT_INTENSITY, 80);
+	makeLight(-30, -30, 18, 0x999999, HIYA.Configuration.LIGHT_INTENSITY, 80);
+	makeLight(-30, -30, 18, 0x999999, HIYA.Configuration.LIGHT_INTENSITY, 80);
+	makeLight(-30, 30, 18, 0x999999, HIYA.Configuration.LIGHT_INTENSITY, 80);
 
 	// controls
 	camera_controls = new THREE.PointerLockControls(camera);
@@ -542,7 +542,7 @@ var detectCollision = function () {
         // Test if we intersect with any obstacle mesh
         collisions = caster.intersectObjects(objects);
 
-		if (collisions.length > 0 && collisions[0].distance <= DISTANCE) {
+		if (collisions.length > 0 && collisions[0].distance <= HIYA.Configuration.DISTANCE) {
 			lockDirections();
 			console.log('Collision detected @ ' + collisions[0].distance);
 		}
