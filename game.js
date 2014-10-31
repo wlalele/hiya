@@ -83,9 +83,7 @@ socket.on('playersUpdate', function (serverplayers_list) {
 						temp_character.setSkin(0);
 						temp_character.root.position.set(0, 5, 0);
 						
-						if (temp_character.meshBody !== null) {
-							temp_character.meshBody.rotation.y = Math.PI * 90 / 180;
-						}
+						
 
 						players_list[player_index].model.add(temp_character.root);
 						temp_character.loadParts(config);
@@ -572,17 +570,16 @@ var animate = function () {
 		if (players_list[player_index].id !== current_player.id && players_list[player_index].model) {
 			players_list[player_index].model.position.x = players_list[player_index].position.x;
 			players_list[player_index].model.position.z = players_list[player_index].position.z;
-			//players_list[player_index].model.rotation.y = players_list[player_index].rotation.y;
+            players_list[player_index].model.rotation.y = players_list[player_index].rotation._y;
 		}
 	}
 				
 	player_model_group.position.x = character.root.position.x;
 	player_model_group.position.z = character.root.position.z;
-	//player_model_group.rotation.y = character.root.rotation.y;
+	player_model_group.rotation.y = character.root.rotation.y;
 	
 	current_player.position = player_model_group.position;
-	//current_player.rotation = player_model_group.rotation;
-
+	current_player.rotation = player_model_group.rotation;
 
 	stats.update();
 	renderer.render(scene, camera);
