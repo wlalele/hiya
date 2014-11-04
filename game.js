@@ -65,9 +65,9 @@ socket.on('playersUpdate', function (serverplayers_list) {
 						scene.add(players_list[player_index].model);
 
 						config = {
-							baseUrl: 'assets/models/animated/ratamahatta/',
-							body: 'ratamahatta.js',
-							skins: [ 'ratamahatta.png' ],
+							baseUrl: 'assets/models/animated/others/',
+							body: 'blade.js',
+							skins: [ 'blade.png' ],
 							weapons:  [],
 							animations: {
 								move: 'run',
@@ -79,12 +79,10 @@ socket.on('playersUpdate', function (serverplayers_list) {
 						};
 
 						temp_character = new THREE.MD2CharacterComplex();
-						temp_character.scale = 0.22;
+						temp_character.scale = 0.20;
 						temp_character.setSkin(0);
 						temp_character.root.position.set(0, 5, 0);
 						
-						
-
 						players_list[player_index].model.add(temp_character.root);
 						temp_character.loadParts(config);
 					}
@@ -286,9 +284,9 @@ var createWindow = function () {
 var makeCharacter = function () {
     'use strict';
     var config = {
-        baseUrl: 'assets/models/animated/ratamahatta/',
-        body: 'ratamahatta.js',
-        skins: [ 'ratamahatta.png' ],
+        baseUrl: 'assets/models/animated/others/',
+        body: 'blade.js',
+        skins: [ 'blade.jpg' ],
         weapons:  [],
         animations: {
             move: 'run',
@@ -301,18 +299,16 @@ var makeCharacter = function () {
 
     character = new THREE.MD2CharacterComplex();
     character.controls = camera_controls;
-    character.scale = 0.22;
+    character.scale = 0.20;
 
     character.onLoadComplete = function () {
         character.setSkin(0);
         character.root.position.set(0, 5, 0);
-        if (character.meshBody !== null) {
-            character.meshBody.rotation.y = Math.PI * 90 / 180;
-        }
         scene.add(character.root);
     };
 
     character.loadParts(config);
+    
     player_model_group.add(character);
 };
 
