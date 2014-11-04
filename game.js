@@ -67,7 +67,7 @@ socket.on('playersUpdate', function (serverplayers_list) {
 						config = {
 							baseUrl: 'assets/models/animated/others/',
 							body: 'blade.js',
-							skins: [ 'blade.png' ],
+							skins: [ 'blade.jpg' ],
 							weapons:  [],
 							animations: {
 								move: 'run',
