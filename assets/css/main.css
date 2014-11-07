@@ -60,3 +60,20 @@ body {
 	background-color: #d00;
 	opacity: 0.5;
 }
+
+#chat {
+    width: 40%;
+    height: 20%;
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background-color: white;
+}
+
+form { padding: 3px; position: fixed; bottom: 0; }
+form input { width: 200px; }
+
+#messages { list-style-type: none; margin: 0; padding: 0; }
+#messages li { padding: 5px 10px; }
+#messages li:nth-child(odd) { background: #eee; }

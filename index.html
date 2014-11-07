@@ -7,7 +7,18 @@
 		<link href="assets/css/main.css" media="all" rel="stylesheet" type="text/css">
 	</head>
 	<body>
-
+        <script>
+          var socket = io();
+          $('form').submit(function(){
+            socket.emit('chat message', $('#m').val());
+            $('#m').val('');
+            return false;
+          });
+          socket.on('chat message', function(msg){
+            $('#messages').append($('<li>').text(msg));
+          });
+        </script>
+        
 		<div id="crosshair"></div>
 		<div id="blocker">
 			<div id="instructions">
@@ -16,6 +27,13 @@
 				(Z, Q, S, D = Move, SPACE = Jump, MOUSE = Look around)
 			</div>
 		</div>
+        
+        <div id="chat">
+            <ul id="messages"></ul>
+            <form action="">
+              <input id="m" autocomplete="off" /><button>Send</button>
+            </form>
+        </div>
 
 		<script src="assets/js/three.min.js"></script>
 		<script src="assets/js/libs/stats.min.js"></script>

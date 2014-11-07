@@ -12,8 +12,25 @@ var server = http.createServer(function (res) {
 }).listen(8080);
 
 var io = require('socket.io').listen(server);
+
 io.sockets.on('connection', function (socket) {
 	'use strict';
+    // Broadcast a message to every user
+    socket.broadcast.emit('hi & welcome');
+    
+    // Server log connection of user
+    console.log('a user connected');
+    
+    // Server log disconnection of user
+    socket.on('disconnect', function() {
+        console.log('user disconnected');
+    });
+    
+    // When a chat message is sent, broadcast it to every user
+    socket.on('chat message', function(msg){
+        io.emit('chat message', msg);
+    });
+    
 	last_player_id += 1;
     
 	var new_player = {
