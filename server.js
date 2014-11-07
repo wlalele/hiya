@@ -19,11 +19,12 @@ io.sockets.on('connection', function (socket) {
     socket.broadcast.emit('hi & welcome');
     
     // Server log connection of user
-    console.log('a user connected');
+    console.log('a user connected, users online = ', last_player_id);
     
     // Server log disconnection of user
     socket.on('disconnect', function() {
-        console.log('user disconnected');
+        last_player_id -= 1;
+        console.log('a user disconnected, users online = ', last_player_id);
     });
     
     // When a chat message is sent, broadcast it to every user
