@@ -71,7 +71,7 @@ body {
     background-color: white;
 }
 
-form { padding: 3px; position: fixed; bottom: 0; }
+#sender { padding: 3px; position: fixed; bottom: 0; }
 form input { width: 200px; }
 
 #messages { list-style-type: none; margin: 0; padding: 0; }
