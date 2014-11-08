@@ -23,25 +23,13 @@
             </div>
         </div>
 
-		<script src="assets/js/three.min.js"></script>
+		<script src="configuration.js"></script>
+        <script src="assets/js/three.min.js"></script>
 		<script src="assets/js/libs/stats.min.js"></script>
 		<script src="assets/js/socket.io.js"></script>
 		<script src="assets/js/jquery.min.js"></script>
 		<script src='assets/js/threejs/MD2CharacterComplex.js'></script>
 		<script src="assets/js/threejs/controls/PointerLockControls.js"></script>
-        <script src="configuration.js"></script>
 		<script src="game.js"></script>
-        <script>
-            var socket = io();
-        
-            $('#button').click(function () {
-                socket.emit('chat message', $('#m').val());
-                $('#m').val('');
-                return false;
-            });
-            socket.on('chat message', function( msg ) {
-                $('#messages').append($('<li>').text(msg));
-            });
-        </script>
 	</body>
 </html>

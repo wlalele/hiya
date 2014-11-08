@@ -39,6 +39,24 @@ socket.on('connection', function (datas) {
 	current_player = datas;
 });
 
+$('#button').click(sendMessage);
+$("#m").keyup(function(event){
+    if(event.keyCode == 13){
+        $("#button").click();
+    }
+});
+
+function sendMessage() {
+    socket.emit('message', $('#m').val());
+    $('#m').val('');
+    return false;
+}
+
+socket.on('message', function(msg) {
+    'use strict';
+    $('#messages').append($('<li>').text(msg));
+});
+
 socket.on('playersUpdate', function (serverplayers_list) {
     'use strict';
 	var players_to_delete = [], player_index, i, j, player_found = false, config, temp_character;

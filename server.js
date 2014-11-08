@@ -1,5 +1,6 @@
 var http = require('http');
 
+var PORT = 8080;
 var TIMEOUT = 5000;
 
 var players_list = [];
@@ -9,16 +10,17 @@ var server = http.createServer(function (res) {
     'use strict';
 	res.writeHead(200, { 'Content-Type': 'text/plain' });
 	res.end('Hello World\n');
-}).listen(8080);
+}).listen(PORT);
 
 var io = require('socket.io').listen(server);
 
 io.sockets.on('connection', function (socket) {
 	'use strict';
     // Broadcast a message to every user
-    socket.broadcast.emit('hi & welcome');
+    // socket.broadcast.emit('hi & welcome');
     
     // Server log connection of user
+    last_player_id += 1;
     console.log('a user connected, users online = ', last_player_id);
     
     // Server log disconnection of user
@@ -27,16 +29,9 @@ io.sockets.on('connection', function (socket) {
         console.log('a user disconnected, users online = ', last_player_id);
     });
     
-    // When a chat message is sent, broadcast it to every user
-    socket.on('chat message', function(msg){
-        io.emit('chat message', msg);
-    });
-    
-	last_player_id += 1;
-    
-	var new_player = {
+    var new_player = {
 		id : last_player_id,
-		name : 'John Doe',
+		name : 'John Doe ' + last_player_id,
 		position : { x: 0, y: 0, z: 0 },
 		rotation : { x: 0, y: 0, z: 0 },
 		lastTime : new Date().getTime()
@@ -46,6 +41,11 @@ io.sockets.on('connection', function (socket) {
 	
     socket.emit('connection', new_player);
 
+    // When a chat message is sent, broadcast it to every user
+    socket.on('message', function(msg){
+        io.sockets.emit('message', msg);
+    });
+    
     socket.on('update', function (datas) {
         var i, current_time = new Date().getTime();
 		for (i = 0; i < players_list.length; i += 1) {
