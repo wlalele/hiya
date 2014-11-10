@@ -531,7 +531,10 @@ var detectCollision = function () {
         collisions,
         i;
 	
-    if (camera_controls.moveBackward()) {
+    if (camera_controls.moveForward()) {
+        rotationMatrix = new THREE.Matrix4();
+        rotationMatrix.makeRotationY(0);
+    } else if (camera_controls.moveBackward()) {
 		rotationMatrix = new THREE.Matrix4();
 		rotationMatrix.makeRotationY(180 * Math.PI / 180);
 	} else if (camera_controls.moveLeft()) {
@@ -539,7 +542,7 @@ var detectCollision = function () {
 		rotationMatrix.makeRotationY(90 * Math.PI / 180);
 	} else if (camera_controls.moveRight()) {
 		rotationMatrix = new THREE.Matrix4();
-		rotationMatrix.makeRotationY((360 - 90) * Math.PI / 180);
+		rotationMatrix.makeRotationY(270 * Math.PI / 180);
 	} else {
         return;
     }
