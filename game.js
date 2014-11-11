@@ -39,17 +39,14 @@ socket.on('connection', function (datas) {
 	current_player = datas;
 });
 
-$("#m").keyup(function(event){
-    if(event.keyCode == 13){
-        this.sendMessage();
+$("#m").keyup(function (event) {
+    'use strict';
+    if (event.keyCode == 13) {
+        socket.emit('message', $('#m').val());
+        $('#m').val('');
+        return false;
     }
 });
-
-function sendMessage() {
-    socket.emit('message', $('#m').val());
-    $('#m').val('');
-    return false;
-}
 
 socket.on('message', function(msg) {
     'use strict';
