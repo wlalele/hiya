@@ -42,7 +42,9 @@ socket.on('connection', function (datas) {
 $("#m").keyup(function (event) {
     'use strict';
     if (event.keyCode == 13) {
-        socket.emit('message', $('#m').val());
+        var current_date = new Date();
+        var date = '[' + current_date.getHours() + ':' + current_date.getMinutes() + '] ';
+        socket.emit('message', date + $('#m').val());
         $('#m').val('');
         return false;
     }
