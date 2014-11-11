@@ -39,10 +39,9 @@ socket.on('connection', function (datas) {
 	current_player = datas;
 });
 
-$('#button').click(sendMessage);
 $("#m").keyup(function(event){
     if(event.keyCode == 13){
-        $("#button").click();
+        this.sendMessage();
     }
 });
 
