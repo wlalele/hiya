@@ -1,10 +1,11 @@
-var http = require('http');
-
+// Constants
 var PORT = 8080;
 var TIMEOUT = 5000;
+var LOGS_FOLDER = '';
+var CHAT_LOGS_FILENAME = 'chat.log';
 
-var players_list = [];
-var last_player_id = 0;
+// Initialization
+var http = require('http');
 
 var server = http.createServer(function (res) {
     'use strict';
@@ -13,6 +14,18 @@ var server = http.createServer(function (res) {
 }).listen(PORT);
 
 var io = require('socket.io').listen(server);
+
+var winston = require('winston');
+
+var chat_logger = new (winston.Logger)({
+    transports: [
+        new (winston.transports.Console)(),
+        new (winston.transports.File)({ filename: LOGS_FOLDER + CHAT_LOGS_FILENAME })
+    ]
+});
+
+var players_list = [];
+var last_player_id = 0;
 
 io.sockets.on('connection', function (socket) {
 	'use strict';
@@ -42,8 +55,9 @@ io.sockets.on('connection', function (socket) {
     socket.emit('connection', new_player);
 
     // When a chat message is sent, broadcast it to every user
-    socket.on('message', function(msg){
+    socket.on('message', function(msg) {
         io.sockets.emit('message', msg);
+        chat_logger.log('info', msg);
     });
     
     socket.on('update', function (datas) {

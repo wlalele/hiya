@@ -1,8 +1,8 @@
 var HIYA = {
-    VERSION:'31102014',
+    VERSION:'0.01',
     Configuration: {
         // Server
-        HOST: '192.168.1.223',
+        HOST: 'localhost',
         PORT: '8080',
         // Scene 3D
         CAMERA_DISTANCE_MAX: 13,
