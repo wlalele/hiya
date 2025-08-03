@@ -5,32 +5,51 @@ var LOGS_FOLDER = '';
 var CHAT_LOGS_FILENAME = 'chat.log';
 
 // Initialization
-var http = require('http');
+const http = require('http');
+const { Server } = require('socket.io');
+const winston = require('winston');
 
-var server = http.createServer(function (res) {
-    'use strict';
-	res.writeHead(200, { 'Content-Type': 'text/plain' });
-	res.end('Hello World\n');
-}).listen(PORT);
+const server = http.createServer((req, res) => {
+  // Set CORS headers for HTTP requests
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    res.end();
+    return;
+  }
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello World\n');
+});
 
-var io = require('socket.io').listen(server);
+server.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
 
-var winston = require('winston');
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    credentials: true
+  }
+});
 
-var chat_logger = new (winston.Logger)({
-    transports: [
-        new (winston.transports.Console)(),
-        new (winston.transports.File)({ filename: LOGS_FOLDER + CHAT_LOGS_FILENAME })
-    ]
+const chat_logger = winston.createLogger({
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: LOGS_FOLDER + CHAT_LOGS_FILENAME })
+  ]
 });
 
 var players_list = [];
 var last_player_id = 0;
 
 io.sockets.on('connection', function (socket) {
-	'use strict';
+    'use strict';
     // Broadcast a message to every user
-    // socket.broadcast.emit('hi & welcome');
+    socket.broadcast.emit('hi & welcome');
     
     // Server log connection of user
     last_player_id += 1;
@@ -43,15 +62,15 @@ io.sockets.on('connection', function (socket) {
     });
     
     var new_player = {
-		id : last_player_id,
-		name : 'John Doe ' + last_player_id,
-		position : { x: 0, y: 0, z: 0 },
-		rotation : { x: 0, y: 0, z: 0 },
-		lastTime : new Date().getTime()
-	};
-	
-	players_list.push(new_player);
-	
+        id : last_player_id,
+        name : 'John Doe ' + last_player_id,
+        position : { x: 0, y: 0, z: 0 },
+        rotation : { x: 0, y: 0, z: 0 },
+        lastTime : new Date().getTime()
+    };
+    
+    players_list.push(new_player);
+    
     socket.emit('connection', new_player);
 
     // When a chat message is sent, broadcast it to every user
@@ -62,22 +81,22 @@ io.sockets.on('connection', function (socket) {
     
     socket.on('update', function (datas) {
         var i, current_time = new Date().getTime();
-		for (i = 0; i < players_list.length; i += 1) {
-			
-			if (players_list[i].id === datas.id) {
-				players_list[i].position = datas.position;
-				players_list[i].rotation = datas.rotation;
-				players_list[i].lastTime = current_time;
-			} else {
-				if ((players_list[i].lastTime + TIMEOUT) < current_time) {
-					players_list.splice(i, 1);
-				}
-			}
-		}
+        for (i = 0; i < players_list.length; i += 1) {
+            
+            if (players_list[i].id === datas.id) {
+                players_list[i].position = datas.position;
+                players_list[i].rotation = datas.rotation;
+                players_list[i].lastTime = current_time;
+            } else {
+                if ((players_list[i].lastTime + TIMEOUT) < current_time) {
+                    players_list.splice(i, 1);
+                }
+            }
+        }
     });
 });
 
 setInterval(function () {
-	'use strict';
+    'use strict';
     io.sockets.emit('playersUpdate', players_list);
 }, 50);
